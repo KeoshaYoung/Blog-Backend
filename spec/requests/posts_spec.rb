@@ -32,4 +32,43 @@ RSpec.describe "Posts", type: :request do
       expect(post["image"]).to eq("Test Img1")
     end
   end
+
+  describe "POST /posts" do
+    it "should create a post" do
+      user = User.create!(name: "Test", email: "test@test.com", password: "password")
+      jwt = JWT.encode(
+        { user_id: user.id },
+        Rails.application.credentials.fetch(:secret_key_base),
+        "HS256"
+      )
+      post "/posts.json", params: {
+                            title: "Test Title3",
+                            body: "Test Body3",
+                            image: "Test Img3",
+                          },
+                          headers: { "Authorization" => "Bearer #{jwt}" }
+
+      post = JSON.parse(response.body)
+      expect(response).to have_http_status(200)
+      expect(post["title"]).to eq("Test Title3")
+      expect(post["body"]).to eq("Test Body3")
+      expect(post["image"]).to eq("Test Img3")
+    end
+    it "should return error code for invalid data" do
+      user = User.create!(name: "Test", email: "test@test.com", password: "password")
+      jwt = JWT.encode(
+        { user_id: user.id },
+        Rails.application.credentials.fetch(:secret_key_base),
+        "HS256"
+      )
+      post "/posts.json", params: {
+                            title: "",
+                            body: "Test Body3",
+                            image: "Test Img3",
+                          },
+                          headers: { "Authorization" => "Bearer #{jwt}" }
+      post = JSON.parse(response.body)
+      expect(response).to have_http_status(400)
+    end
+  end
 end
