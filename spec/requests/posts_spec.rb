@@ -71,4 +71,24 @@ RSpec.describe "Posts", type: :request do
       expect(response).to have_http_status(400)
     end
   end
+
+  # describe "PATCH /posts/:id" do
+  #   it "should update a post" do
+  #     user = User.create!(name: "Test", email: "test@test.com", password: "password")
+  #     jwt = JWT.encode(
+  #       { user_id: user.id },
+  #       Rails.application.credentials.fetch(:secret_key_base),
+  #       "HS256"
+  #     )
+  #     post "/posts/:id.json", params: {
+  #                               title: "Test Title3",
+  #                               body: "Test Body3",
+  #                               image: "Test Img3",
+  #                             },
+  #                             headers: { "Authorization" => "Bearer #{jwt}" }
+
+  #     post = JSON.parse(response.body)
+  #     expect(response).to have_http_status(200)
+  #   end
+  # end
 end
